@@ -5,15 +5,20 @@ const PostsController = {
   registerRouter() {
     const router = express.Router();
 
+    // Instead of this: we have lines 12 and 13, which calls index function
+    // router.get( => (req,res) {
+      // res.send("Hello World")
+    // })
     router.get('/', this.index);
     router.post('/', this.create);
 
     return router;
   },
   index(req, res) {
-    models.Posts.findAll()
+    models.Posts.findAll({ order: [['id', 'DESC']]}) // return post with id by descending order because default is ascending order
       .then((posts) => {
         res.render('posts', { posts });
+        //res.json(posts); // to see the json
       });
   },
   create(req, res) {
